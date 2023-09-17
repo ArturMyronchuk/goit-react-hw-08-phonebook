@@ -1,16 +1,26 @@
+import { Container } from '@mui/material';
+import { useEffect, Suspense } from 'react';
+import { useDispatch } from 'react-redux';
+import { Loader } from './Loader/Loader';
+import { AppRoutes } from 'config/routes';
+import { refreshUser } from 'redux/auth/authOperations';
+import { ComponentHeader } from './AppBar';
+
 export const App = () => {
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(refreshUser());
+  }, [dispatch]);
+
   return (
-    <div
-      style={{
-        height: '100vh',
-        display: 'flex',
-        justifyContent: 'center',
-        alignItems: 'center',
-        fontSize: 40,
-        color: '#010101'
-      }}
-    >
-      React homework template
-    </div>
+    <>
+      <ComponentHeader />
+      <Container>
+        <Suspense fallback={<Loader />}>
+          <AppRoutes />
+        </Suspense>
+      </Container>
+    </>
   );
 };
